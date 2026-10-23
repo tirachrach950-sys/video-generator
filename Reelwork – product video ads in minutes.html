@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reelwork – product video ads in minutes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Instrument+Sans:wght@400;600&family=Playfair+Display:ital,wght@1,700&family=Syne:wght@800&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f1ec;--surface:#fff;--ink:#16222b;--muted:#5c6a74;--line:#d9d5cb;--accent:#0f6b5c;--accent-ink:#fff;--hot:#f2b705;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f171d;--surface:#18232b;--ink:#eef2f4;--muted:#9bacb7;--line:#2c3a44;--accent:#3fc1a8;--accent-ink:#0b1318;--hot:#f2b705}}
+:root[data-theme="dark"]{--bg:#0f171d;--surface:#18232b;--ink:#eef2f4;--muted:#9bacb7;--line:#2c3a44;--accent:#3fc1a8;--accent-ink:#0b1318;--hot:#f2b705}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "Instrument Sans",system-ui,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 20px 56px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0 28px}
+.logo{font:800 22px "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.02em}
+.credits{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:14px}
+h1{font:800 clamp(32px,6vw,56px)/1.02 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.03em;margin:0 0 12px;max-width:14ch}
+.lead{color:var(--muted);max-width:52ch;margin:0 0 32px}
+.grid{display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+form{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:16px}
+label{display:grid;gap:6px;font-weight:600;font-size:14px}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+.tpl{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.tpl button{font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 6px;cursor:pointer;font-weight:600;font-size:14px}
+.tpl button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.go{font:800 17px "Bricolage Grotesque",system-ui,sans-serif;background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:14px;cursor:pointer}
+.go:disabled{opacity:.55;cursor:wait}
+.hint{color:var(--muted);font-size:13px;margin:0}
+.phone{width:300px;max-width:100%;aspect-ratio:9/16;background:#000;border-radius:22px;border:6px solid var(--ink);overflow:hidden;position:relative;margin:0 auto}
+canvas{width:100%;height:100%;display:block}
+.status{position:absolute;inset:auto 0 0 0;padding:14px;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;font-size:14px}
+.bar{height:6px;background:rgba(255,255,255,.25);border-radius:3px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--hot)}
+h2{font:800 22px "Bricolage Grotesque",system-ui,sans-serif;margin:44px 0 12px;letter-spacing:-.01em}
+.list{display:grid;gap:8px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.row button{font:inherit;font-weight:600;background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+.empty{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><span class="logo">Reelwork</span><span class="credits" id="credits" aria-live="polite"></span></header>
+<h1>Product video ads for your shop</h1>
+<p class="lead">Type your product, pick a style, and get a vertical clip ready for Reels, TikTok and Shorts. This is a working prototype: clips are drawn in your browser until a real video model is connected.</p>
+
+<div class="grid">
+<form id="f">
+<label>Product name<input id="name" maxlength="40" value="Argan Glow Oil" required></label>
+<label>Offer or tagline<input id="tag" maxlength="48" value="–20% this weekend"></label>
+<div><div style="font-weight:600;font-size:14px;margin-bottom:6px">Style</div>
+<div class="tpl" id="tpl">
+<button type="button" aria-pressed="true" data-t="spot">Spotlight</button>
+<button type="button" aria-pressed="false" data-t="wipe">Color wipe</button>
+<button type="button" aria-pressed="false" data-t="sale">Big sale</button>
+<button type="button" aria-pressed="false" data-t="p3d">3D product</button>
+</div></div>
+<label>Brand color<select id="col"><option value="#0f6b5c">Deep green</option><option value="#c2410c">Burnt orange</option><option value="#1d4ed8">Royal blue</option><option value="#9d174d">Berry</option></select></label>
+<label>Title font<select id="font"><option value="bric">Modern bold</option><option value="play">Elegant serif</option><option value="syne">Sharp display</option><option value="paci">Handwritten</option></select></label>
+<label>Product photo (optional)<input id="img" type="file" accept="image/*"></label>
+<button class="go" id="go" type="submit">Generate clip (1 credit)</button>
+<p class="hint" id="msg" role="status">Each generation uses one credit. You start with 5.</p>
+</form>
+
+<div class="phone"><canvas id="cv" width="300" height="533" aria-label="Video preview"></canvas>
+<div class="status" id="st" hidden><span id="stt">Queued…</span><div class="bar"><i id="pb"></i></div></div></div>
+</div>
+
+<h2>Your clips</h2>
+<div class="list" id="list"><p class="empty">Nothing yet. Generate your first clip above.</p></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+var cv=document.getElementById('cv'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+var state={credits:5,clips:[],tpl:'spot',font:'bric',img:null};
+try{var s=JSON.parse(localStorage.getItem('reelwork')||'null');if(s&&typeof s.credits==='number'){state.credits=s.credits;state.clips=s.clips||[]}}catch(e){}
+function save(){try{localStorage.setItem('reelwork',JSON.stringify({credits:state.credits,clips:state.clips},function(k,v){return k==='img'?undefined:v}))}catch(e){}}
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var raf=0;
+function fontCss(f){return({play:'italic 700 36px "Playfair Display",serif',syne:'800 32px Syne,sans-serif',paci:'400 36px Pacifico,cursive'})[f]||'800 34px "Bricolage Grotesque",system-ui,sans-serif'}
+try{['800 20px "Bricolage Grotesque"','italic 700 20px "Playfair Display"','800 20px Syne','400 20px Pacifico'].forEach(function(f){document.fonts.load(f)})}catch(e){}
+document.getElementById('font').addEventListener('change',function(){state.font=this.value});
+document.getElementById('img').addEventListener('change',function(){var f=this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){state.img=im;document.getElementById('msg').textContent='Photo added. Choose 3D product to see it in 3D.'};im.src=rd.result};rd.readAsDataURL(f)});
+var R3,S3,C3,G3,key3;
+function scene3d(c,t){
+ var g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,c.col);g.addColorStop(1,'#0b1013');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ if(!window.THREE)return;
+ if(!R3){R3=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});R3.setSize(W,H);R3.setPixelRatio(1);R3.shadowMap.enabled=true;R3.outputEncoding=THREE.sRGBEncoding;
+  S3=new THREE.Scene();C3=new THREE.PerspectiveCamera(30,W/H,.1,50);C3.position.set(0,1.6,8.5);C3.lookAt(0,.8,0);
+  S3.add(new THREE.HemisphereLight(0xffffff,0x223344,.8));
+  var k=new THREE.DirectionalLight(0xffffff,1.3);k.position.set(3,6,4);k.castShadow=true;S3.add(k);
+  var rim=new THREE.PointLight(0xffe2b0,1.4,25);rim.position.set(-4,2,-3);S3.add(rim);
+  var fl=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.ShadowMaterial({opacity:.4}));fl.rotation.x=-Math.PI/2;fl.position.y=.01;fl.receiveShadow=true;S3.add(fl);
+  G3=new THREE.Group();G3.scale.setScalar(.8);S3.add(G3)}
+ var k3=c.img||'bottle';
+ if(k3!==key3){key3=k3;while(G3.children.length)G3.remove(G3.children[0]);
+  if(c.img){var tx=new THREE.Texture(c.img);tx.needsUpdate=true;tx.encoding=THREE.sRGBEncoding;var a=c.img.width/c.img.height,w=Math.min(2.3,2.4*a),h=w/a;
+   var fr=new THREE.Mesh(new THREE.BoxGeometry(w+.14,h+.14,.1),new THREE.MeshPhongMaterial({color:0xffffff,shininess:80}));fr.castShadow=true;fr.position.y=h/2+.1;
+   var pl=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshPhongMaterial({map:tx}));pl.position.set(0,h/2+.1,.06);G3.add(fr,pl)}
+  else{var pts=[[0,0],[.75,0],[.9,.15],[.92,1.5],[.7,2.0],[.32,2.3],[.32,2.7]].map(function(p){return new THREE.Vector2(p[0],p[1])});
+   var b=new THREE.Mesh(new THREE.LatheGeometry(pts,48),new THREE.MeshPhongMaterial({color:0x7a3e10,shininess:220,specular:0xffffff,transparent:true,opacity:.94}));b.castShadow=true;
+   var cap=new THREE.Mesh(new THREE.CylinderGeometry(.4,.4,.55,32),new THREE.MeshPhongMaterial({color:0xd4af37,shininess:150,specular:0xfff2b0}));cap.position.y=2.95;cap.castShadow=true;
+   var lab=new THREE.Mesh(new THREE.CylinderGeometry(.935,.935,.9,48,1,true,0,Math.PI*1.7),new THREE.MeshPhongMaterial({color:0xf5efe2,side:THREE.DoubleSide,shininess:30}));lab.position.y=.9;G3.add(b,cap,lab)}}
+ G3.rotation.y=c.img?Math.sin(t*1.3)*.5:t*1.25;G3.position.y=Math.sin(t*2)*.06;
+ R3.render(S3,C3);ctx.drawImage(R3.domElement,0,0,W,H);
+}
+function draw(c,t){
+ ctx.clearRect(0,0,W,H);
+ var p=Math.min(t/1,1);
+ if(c.tpl==='spot'){
+  ctx.fillStyle='#0b1013';ctx.fillRect(0,0,W,H);
+  var r=120+Math.sin(t*2)*18+p*60,g=ctx.createRadialGradient(W/2,H/2,10,W/2,H/2,r*2);
+  g.addColorStop(0,c.col);g.addColorStop(1,'#0b1013');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ }else if(c.tpl==='wipe'){
+  ctx.fillStyle='#f3f1ec';ctx.fillRect(0,0,W,H);
+  for(var i=0;i<4;i++){var x=Math.min(1,Math.max(0,t*1.4-i*.18));ctx.fillStyle=i%2?'#16222b':c.col;ctx.fillRect(0,i*H/4,W*x,H/4)}
+ }else{
+  ctx.fillStyle=c.col;ctx.fillRect(0,0,W,H);
+  if(c.tpl==='p3d'){scene3d(c,t)}else{ctx.fillStyle='#f2b705';ctx.beginPath();ctx.arc(W/2,H*.38,110+Math.sin(t*3)*6,0,7);ctx.fill()}
+ }
+ var light=c.tpl==='wipe'?'#fff':'#fff';
+ ctx.textAlign='center';ctx.fillStyle=light;ctx.shadowColor='rgba(0,0,0,.45)';ctx.shadowBlur=8;
+ ctx.font=fontCss(c.font);
+ var a=Math.min(1,Math.max(0,t*2-.2));ctx.globalAlpha=a;
+ wrap(c.name,W/2,H*(c.tpl==='p3d'?.76:.52)+(1-a)*20,W-50,38);
+ ctx.font='600 20px "Instrument Sans",system-ui,sans-serif';
+ ctx.globalAlpha=Math.min(1,Math.max(0,t*2-.9));
+ wrap(c.tag,W/2,H*(c.tpl==='p3d'?.92:.72),W-60,26);
+ ctx.globalAlpha=1;ctx.shadowBlur=0;
+}
+function wrap(txt,x,y,max,lh){var w=txt.split(' '),line='',ls=[];w.forEach(function(k){var tst=line?line+' '+k:k;if(ctx.measureText(tst).width>max&&line){ls.push(line);line=k}else line=tst});ls.push(line);ls.forEach(function(l,i){ctx.fillText(l,x,y+i*lh)})}
+function play(c){
+ cancelAnimationFrame(raf);
+ if(reduce){draw(c,2);return}
+ var t0=performance.now();
+ (function loop(n){var t=((n-t0)/1000)%5;try{draw(c,t)}catch(e){}raf=requestAnimationFrame(loop)})(t0);
+}
+function render(){
+ document.querySelector('.grid').appendChild(document.querySelector('.phone'));
+ document.getElementById('credits').textContent=state.credits+' credit'+(state.credits===1?'':'s')+' left';
+ var l=document.getElementById('list');l.textContent='';
+ if(!state.clips.length){var p=document.createElement('p');p.className='empty';p.textContent='Nothing yet. Generate your first clip above.';l.appendChild(p);return}
+ state.clips.forEach(function(c,i){
+  var r=document.createElement('div');r.className='row';
+  var s=document.createElement('span');s.textContent=c.name+' – '+({spot:'Spotlight',wipe:'Color wipe',sale:'Big sale',p3d:'3D product'})[c.tpl];
+  var b=document.createElement('button');b.type='button';b.textContent='Play';b.onclick=function(){var ph=document.querySelector('.phone');r.after(ph);play(c);ph.scrollIntoView({block:'nearest',behavior:reduce?'auto':'smooth'})};
+  r.appendChild(s);r.appendChild(b);l.appendChild(r);
+ });
+}
+document.getElementById('tpl').addEventListener('click',function(e){
+ var b=e.target.closest('button');if(!b)return;state.tpl=b.dataset.t;
+ [].forEach.call(this.children,function(x){x.setAttribute('aria-pressed',x===b)});
+});
+document.getElementById('f').addEventListener('submit',function(e){
+ e.preventDefault();
+ var msg=document.getElementById('msg'),go=document.getElementById('go');
+ if(state.credits<1){msg.textContent='You are out of credits. In the live version, this is where checkout opens.';return}
+ var c={name:document.getElementById('name').value.trim()||'Your product',tag:document.getElementById('tag').value.trim(),col:document.getElementById('col').value,tpl:state.tpl,font:state.font,img:state.img};
+ go.disabled=true;msg.textContent='Generating…';
+ var st=document.getElementById('st'),stt=document.getElementById('stt'),pb=document.getElementById('pb');
+ st.hidden=false;var steps=['Queued…','Writing the scenes…','Rendering frames…','Adding finishing touches…'],p=0;
+ var iv=setInterval(function(){
+  p+=reduce?50:8+Math.random()*8;
+  pb.style.width=Math.min(p,100)+'%';stt.textContent=steps[Math.min(3,Math.floor(p/26))];
+  if(p>=100){clearInterval(iv);st.hidden=true;pb.style.width='0';
+   state.credits--;state.clips.unshift(c);if(state.clips.length>8)state.clips.pop();save();render();play(c);document.querySelector('.phone').scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'});
+   go.disabled=false;msg.textContent='Done. Your clip is playing in the preview.'}
+ },400);
+});
+render();
+play({name:'Argan Glow Oil',tag:'–20% this weekend',col:'#0f6b5c',tpl:'spot'});
+})();
+</script>
+</body>
+</html>
